@@ -14,7 +14,7 @@
 - Create a virtual environment using `python -m venv env`.
 - Activate the virtual environment using `source env/bin/activate`.
 - Install the required dependencies using `pip install -r requirements.txt`.
-- Run the API using uvicorn `uvicorn server:app --host 0.0.0.0 --port 8000`.
+- Start the API server using uvicorn `uvicorn server:app --host 0.0.0.0 --port 8000`.
 - Access the API documentation at `/docs`.
 
 ## Routes
