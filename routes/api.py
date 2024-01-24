@@ -28,24 +28,27 @@ def save_file(x: list, y: list):
     Parameters: x: list, y: list
     Description: Function to plot the graph and save it to the file system
     """
+    try:
+        current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+        filename = f"graph_{current_time}.png"
 
-    current_time = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"graph_{current_time}.png"
+        fig, ax = plt.subplots()
 
-    fig, ax = plt.subplots()
+        sns.lineplot(x=x, y=y, ax=ax)
+        ax.set_title("ADANIPORTS")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Closing Price")
 
-    sns.lineplot(x=x, y=y, ax=ax)
-    ax.set_title("ADANIPORTS")
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Closing Price")
+        fig.tight_layout()
+        fig.autofmt_xdate()
 
-    fig.tight_layout()
-    fig.autofmt_xdate()
+        fig.savefig(filename)
+        plt.close(fig)
 
-    fig.savefig(filename)
-    plt.close(fig)
+        return filename
 
-    return filename
+    except Exception as e:
+        print(f"Error saving file: {e}")
 
 
 def remove_file(path: str):
@@ -55,7 +58,11 @@ def remove_file(path: str):
     Description: Function to remove the file from the file system
     """
 
-    os.remove(path)
+    try:
+        os.remove(path)
+
+    except Exception as e:
+        print(f"Error removing file: {e}")
 
 
 @api.get("/")
@@ -65,35 +72,44 @@ def read_root():
     Method: GET
     Description: This is the root of the API
     """
+    try:
+        return JSONResponse(
+            content={
+                "code": 200,
+                "message": "success",
+                "data": {
+                    "endpoints": [
+                        {
+                            "url": "/",
+                            "method": "GET",
+                            "description": "Root",
+                            "example": "/",
+                        },
+                        {
+                            "url": "/graph",
+                            "method": "POST",
+                            "description": "Graph",
+                            "parameters": [
+                                {"name": "start", "type": "str", "required": True},
+                                {"name": "end", "type": "str", "required": True},
+                            ],
+                            "example": "/graph?start=2007-11-27&end=2021-04-30",
+                        },
+                    ],
+                    "Description": "PineLabs task",
+                    "Contact": "Kapil Nallathambi: kapil.nallathambi@pinelabs.com",
+                },
+            }
+        )
 
-    return JSONResponse(
-        content={
-            "code": 200,
-            "message": "success",
-            "data": {
-                "endpoints": [
-                    {
-                        "url": "/",
-                        "method": "GET",
-                        "description": "Root",
-                        "example": "/",
-                    },
-                    {
-                        "url": "/graph",
-                        "method": "POST",
-                        "description": "Graph",
-                        "parameters": [
-                            {"name": "start", "type": "str", "required": True},
-                            {"name": "end", "type": "str", "required": True},
-                        ],
-                        "example": "/graph?start=2007-11-27&end=2021-04-30",
-                    },
-                ],
-                "Description": "PineLabs task",
-                "Contact": "Kapil Nallathambi: kapil.nallathambi@pinelabs.com",
-            },
-        }
-    )
+    except Exception as e:
+        raise JSONResponse(
+            content={
+                "code": 500,
+                "message": "Internal Server Error",
+                "error": str(e),
+            }
+        )
 
 
 @api.get("/graph")
