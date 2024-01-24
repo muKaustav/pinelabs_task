@@ -76,7 +76,7 @@ def read_root():
                         "url": "/",
                         "method": "GET",
                         "description": "Root",
-                        "example": "http://localhost:8000/api/",
+                        "example": "/",
                     },
                     {
                         "url": "/graph",
@@ -86,7 +86,7 @@ def read_root():
                             {"name": "start", "type": "str", "required": True},
                             {"name": "end", "type": "str", "required": True},
                         ],
-                        "example": "http://localhost:8000/api/graph?start=2007-11-27&end=2021-04-30",
+                        "example": "/graph?start=2007-11-27&end=2021-04-30",
                     },
                 ],
                 "Description": "PineLabs task",
