@@ -28,6 +28,7 @@ def save_file(x: list, y: list):
     Parameters: x: list, y: list
     Description: Function to plot the graph and save it to the file system
     """
+
     try:
         current_time = datetime.now().strftime("%Y%m%d%H%M%S")
         filename = f"graph_{current_time}.png"
@@ -72,6 +73,7 @@ def read_root():
     Method: GET
     Description: This is the root of the API
     """
+
     try:
         return JSONResponse(
             content={
@@ -96,7 +98,7 @@ def read_root():
                             "example": "/graph?start=2007-11-27&end=2021-04-30",
                         },
                     ],
-                    "Description": "PineLabs task",
+                    "Description": "PineLabs task: Data Visualization API",
                     "Contact": "Kapil Nallathambi: kapil.nallathambi@pinelabs.com",
                 },
             }
