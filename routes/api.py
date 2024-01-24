@@ -3,6 +3,7 @@ from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import FileResponse
 from starlette.responses import JSONResponse
 from schemas.request import Request
+from datetime import datetime
 import matplotlib
 
 matplotlib.use("Agg")
@@ -28,13 +29,23 @@ def save_file(x: list, y: list):
     Description: Function to plot the graph and save it to the file system
     """
 
-    plt = sns.lineplot(x=x, y=y)
-    plt.set_title("ADANIPORTS")
-    plt.set_xlabel("Date")
-    plt.set_ylabel("Closing Price")
-    plt.figure.tight_layout()
-    plt.figure.autofmt_xdate()
-    plt.figure.savefig("graph.png")
+    current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"graph_{current_time}.png"
+
+    fig, ax = plt.subplots()
+
+    sns.lineplot(x=x, y=y, ax=ax)
+    ax.set_title("ADANIPORTS")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Closing Price")
+
+    fig.tight_layout()
+    fig.autofmt_xdate()
+
+    fig.savefig(filename)
+    plt.close(fig)
+
+    return filename
 
 
 def remove_file(path: str):
@@ -124,12 +135,12 @@ def graph(start: str, end: str, background_tasks: BackgroundTasks):
         #    [Timestamp('2007-12-27 00:00:00'), 1211.65]
         #  ]
 
-        save_file(data[:, 0], data[:, 1])
+        filename = save_file(data[:, 0], data[:, 1])
 
         # Remove the file from the file system after the response is sent
-        background_tasks.add_task(remove_file, "graph.png")
+        background_tasks.add_task(remove_file, filename)
 
-        return FileResponse("graph.png", media_type="image/png")
+        return FileResponse(filename, media_type="image/png")
 
     except Exception as e:
         raise JSONResponse(
