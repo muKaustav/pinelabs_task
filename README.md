@@ -72,7 +72,7 @@ end (str): End date in the format "YYYY-MM-DD".
 - **Example Response**:
 
 <p align = center>
-    <img alt="Project Logo" src="" target="_blank" />
+    <img alt="Project Logo" src="https://raw.githubusercontent.com/muKaustav/pinelabs_task/main/assets/graph.png" target="_blank" />
 </p>
 
 ## Author
