@@ -89,7 +89,7 @@ def read_root():
                         },
                         {
                             "url": "/graph",
-                            "method": "POST",
+                            "method": "GET",
                             "description": "Graph",
                             "parameters": [
                                 {"name": "start", "type": "str", "required": True},
